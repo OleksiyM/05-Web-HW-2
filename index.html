@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="main.css"/>
+    <title>Web socket chat</title>
+</head>
+
+<body>
+<h2>Server commands</h2>
+<div>
+    <pre>exchange [days] [all]</pre>
+    <ul>
+        <li>
+            If no `days` argument is provided, it defaults to retrieving data for the current day.
+        </li>
+        <li>The maximum allowed value for days is 10.</li>
+        <li>If `all` argument is provided, extended currencies list is used for output: ('EUR', 'USD', 'CHF', 'CZK',
+            'GBP', 'PLN').
+        </li>
+        <li>If all argument is not provided, it defaults to retrieving data for the base currencies list: ('EUR',
+            'USD')
+        </li>
+    </ul>
+</div>
+<form id="formChat">
+    <input type="text" id="textField"/>
+    <button type="submit">Send message</button>
+</form>
+<div id="subscribe"></div>
+<script src="main.js"></script>
+</body>
+</html>
