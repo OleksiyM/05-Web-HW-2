@@ -4,9 +4,10 @@ from datetime import datetime
 
 import aiofiles
 import aiohttp
+from markupsafe import Markup
 
 from DateHandler import DateHandler
-from constants import BASE_CURRENCIES, ALL_CURRENCIES, MAX_ARCHIVE_DAYS, LOG_FILE, BANK_URL, MAX_ARCHIVE_DAYS
+from constants import BASE_CURRENCIES, ALL_CURRENCIES, LOG_FILE, BANK_URL, MAX_ARCHIVE_DAYS
 
 logger = logging.getLogger(__name__)
 
@@ -79,9 +80,6 @@ async def generate_html_table_1(data: list) -> str:
         html_table += "</table>\n"
 
     return html_table
-
-
-from markupsafe import Markup
 
 
 async def generate_html_table(data: list) -> str:
