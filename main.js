@@ -17,6 +17,7 @@ ws.onmessage = (e) => {
     text = e.data
 
     const elMsg = document.createElement('div')
-    elMsg.textContent = text
+    // elMsg.textContent = text
+    elMsg.innerHTML = text
     subscribe.appendChild(elMsg)
 }

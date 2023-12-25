@@ -9,7 +9,6 @@ from Server import Server
 from constants import STORAGE_DIR
 from utils import create_storage_dir
 
-
 logging.basicConfig(level=logging.INFO)
 
 

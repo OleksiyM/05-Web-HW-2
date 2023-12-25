@@ -53,42 +53,42 @@ def save_data_to_file(r, filename):
         # file.write(str(r))
 
 
-async def generate_html_table_1(data: list) -> str:
-    html_table = ""
-    for item in data:
-        date, currency_rates = list(item.items())[0]
-
-        html_table += f"<h3>{date}:</h3>\n"
-        html_table += "<table>\n"
-        html_table += "<thead>\n"
-        html_table += "<tr>\n"
-        html_table += "<th>Currency</th>\n"
-        html_table += "<th>Sale</th>\n"
-        html_table += "<th>Purchase</th>\n"
-        html_table += "</tr>\n"
-        html_table += "</thead>\n"
-        html_table += "<tbody>\n"
-
-        for currency, rates in currency_rates.items():
-            html_table += "<tr>\n"
-            html_table += f"<td>{currency}</td>\n"
-            html_table += f"<td>{rates['sale']}</td>\n"
-            html_table += f"<td>{rates['purchase']}</td>\n"
-            html_table += "</tr>\n"
-
-        html_table += "</tbody>\n"
-        html_table += "</table>\n"
-
-    return html_table
-
-
 async def generate_html_table(data: list) -> str:
     html_table = ""
     for item in data:
         date, currency_rates = list(item.items())[0]
 
-        html_table += f"<h3>{date}:</h3>\n"
-        html_table += Markup("<table>\n")
+        html_table += f'<b>{date}:</b>\n'
+        html_table += '<table border="1"">\n'
+        html_table += '<thead>\n'
+        html_table += '<tr>\n'
+        html_table += '<th>Currency</th>\n'
+        html_table += '<th>Sale</th>\n'
+        html_table += '<th>Purchase</th>\n'
+        html_table += '</tr>\n'
+        html_table += '</thead>\n'
+        html_table += '<tbody>\n'
+
+        for currency, rates in currency_rates.items():
+            html_table += '<tr>\n'
+            html_table += f'<td>{currency}</td>\n'
+            html_table += f"<td>{rates['sale']}</td>\n"
+            html_table += f"<td>{rates['purchase']}</td>\n"
+            html_table += '</tr>\n'
+
+        html_table += '</tbody>\n'
+        html_table += '</table>\n'
+
+    return html_table
+
+
+async def generate_html_table_m(data: list) -> str:
+    html_table = ""
+    for item in data:
+        date, currency_rates = list(item.items())[0]
+
+        html_table += Markup(f"<h3>{date}:</h3>\n")
+        html_table += Markup('<table border="1">\n')
         html_table += Markup("<thead>\n")
         html_table += Markup("<tr>\n")
         html_table += Markup("<th>Currency</th>\n")
@@ -126,23 +126,6 @@ async def generate_text_table_html(data) -> list:
         text_table.append("\n")
 
     return text_table
-
-
-async def generate_text_table_console(data):
-    text_table = ""
-    for item in data:
-        date, currency_rates = list(item.items())[0]
-
-        text_table += f"{date}:\n"
-        text_table += Markup("Currency  Sale  Purchase\n")
-        text_table += Markup("--------  ----  --------\n")
-
-        for currency, rates in currency_rates.items():
-            text_table += Markup(f"{currency:<10}  {rates['sale']:>5.2f}  {rates['purchase']:>8.2f}\n")
-
-        text_table += Markup("\n")
-
-    return str(text_table)
 
 
 async def check_day_range(day):
