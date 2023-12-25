@@ -5,7 +5,7 @@ This project is a WebSocket chat server that retrieves exchange rate data from P
 ## Features
 
 * **Real-time exchange rate updates:** The server fetches data directly from PrivatBank's API, ensuring up-to-date information.
-* **Customizable data retrieval:** Users can specify the number of days (up to 10) and currencies to retrieve using chat commands.
+* **Customizable data retrieval:** Users can specify the number of archive days (up to 10) and currencies to retrieve using chat commands.
 * **Interactive chat interface:** Users can send messages and receive exchange rate updates seamlessly.
 * **Clean and organized code:** The project adheres to best practices for readability and maintainability.
 
