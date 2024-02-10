@@ -221,3 +221,171 @@ def delete_item(item_id: int, db: Session = Depends(get_db), token: str = Depend
 
 app.include_router(items_router, prefix="/items")
 
+# https://aws.amazon.com/codewhisperer/q/ Amazon Q and AWS CodeWhisperer code AI tool was used for generating code below
+
+# My name is Amazon Q. I was created by Amazon to be helpful, harmless, and honest.
+# Amazon Q and AWS CodeWhisperer are both AI assistants created by Amazon to help software developers
+# * Amazon Q focuses on conversational assistance through natural language, while CodeWhisperer provides targeted code recommendations.
+# * CodeWhisperer is specialized for software development tasks within IDEs, whereas Amazon Q can also answer general questions outside of an IDE context.
+# * When used together in an IDE, Amazon Q and CodeWhisperer complement each other by providing different types of AI-powered support.
+# The main similarities are that they are both generative AI services created by Amazon to enhance developer productivity.
+
+from fastapi import FastAPI, Request, APIRouter
+from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
+from pydantic import BaseModel
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import Session
+from typing import List
+
+
+app = FastAPI()
+router = APIRouter()
+router2 = APIRouter()
+
+engine = create_engine('sqlite:///database.db')
+Base = declarative_base()
+
+Base.metadata.create_all(engine)
+
+
+class User(Base):
+    __tablename__ = 'users'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    email = Column(String)
+
+# User model
+class User(BaseModel):
+    id: int
+    name: str
+    email: str
+
+# In-memory database
+database = {}
+
+# Router 1 - GET all users
+@router.get("/users/")
+async def get_users():
+    return database.values()
+
+# Router 1 - GET single user
+@router.get("/users/{id}")  
+async def get_user(id: int):
+    return database[id]
+
+# Router 2 - POST new user  
+@router2.post("/users/")
+async def create_user(user: User):
+    database[user.id] = user
+    return user
+
+# Router 2 - PUT update user
+@router2.put("/users/{id}")
+async def update_user(id: int, user: User):
+    database[id] = user
+    return user
+
+# Router 2 - DELETE user
+@router2.delete("/users/{id}")
+async def delete_user(id: int):
+    del database[id]
+    return {"message": "User deleted"}
+
+app.include_router(router) 
+app.include_router(router2)
+
+# Here is an example of using Jinja2 templates to output data from an API in Python: 
+from flask import Flask, render_template
+import requests
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+  response = requests.get('https://example.com/api/data')
+  data = response.json()
+
+  return render_template('index.html', data=data)
+
+# templates/index.html:
+<html>
+<body>
+  <h1>API Data</h1>
+
+  <ul>
+    {% for item in data %}
+      <li>{{ item.name }}</li>
+    {% endfor %}
+  </ul>
+
+</body>
+</html>
+
+# Here is an example of adding error handling for wrong responses or non-existent data in a FastAPI application:
+from fastapi import FastAPI, HTTPException
+
+app = FastAPI()
+
+# Sample data
+data = {"items": [1,2,3]} 
+
+@app.get("/items/{id}")
+async def read_item(id: str):
+    if id not in data["items"]:
+        raise HTTPException(status_code=404, detail="Item not found")
+    return {id: data["items"][id]}
+
+@app.get("/items/")
+async def read_items():
+    try:
+        return data
+    except KeyError:
+        raise HTTPException(status_code=400, detail="Invalid response")
+
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request, exc):
+    return {"error": exc.detail} 
+
+# 
+from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
+from sqlalchemy import create_engine
+
+Base = declarative_base()
+
+class Author(Base):
+    __tablename__ = 'author'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    articles = relationship("Article")
+
+class Article(Base):
+    __tablename__ = 'article'
+
+    id = Column(Integer, primary_key=True)
+    title = Column(String)
+    body = Column(String)
+    author_id = Column(Integer, ForeignKey('author.id'))
+    author = relationship("Author")
+    tags = relationship("Tag", secondary="article_tag")
+
+class Tag(Base):
+    __tablename__ = 'tag'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    articles = relationship("Article", secondary="article_tag")
+
+class ArticleTag(Base):
+    __tablename__ = 'article_tag'
+    article_id = Column(Integer, ForeignKey('article.id'), primary_key=True)
+    tag_id = Column(Integer, ForeignKey('tag.id'), primary_key=True)
+
+engine = create_engine('postgresql://user:pass@localhost/test')
+Base.metadata.create_all(engine)
+
